@@ -41,10 +41,10 @@
 - communicating
 - controlling
 
-## Project Groups
+## Process Groups
 
 - initiate
-- pan
+- plan
 - execute
 - monitor and control
 - close
