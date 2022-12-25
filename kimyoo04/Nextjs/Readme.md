@@ -29,8 +29,11 @@
 
 - pages: file-based routing
 - public: static files (경로설정 시 public 빼고 경로 설정하기)
+- data: dummy-data 넣기 가능
 
 ## nextjs v13
+
+<!-- https://nextjs.org/blog/next-13 -->
 
 - Link 테그 안에 a 테그를 넣을 필요 없음.
 - rust 기반 turbopack 배포 번들링 툴 새로 만듬.
