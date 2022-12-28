@@ -1,11 +1,43 @@
 ## signin.js <- api
 
 ```js
-export default (req, res) => {
-  if (req.method === "POST") {
-    res.setHeader("Set-Cookie", "a_name=Yoojacha;Max-age=3600;HttpOnly,Secure");
-    res.status(200).json({message: "ok"});
+export default async (req, res) => {
+  if (req.method !== "POST") {
+    return;
   }
+
+  const data = req.body;
+  const {email, password} = data;
+
+  if (
+    !email ||
+    !email.include("@") ||
+    !password ||
+    password.trim().length < 7
+  ) {
+    res.status(422).json({message: "Fail signin"});
+    return;
+  }
+
+  const client = await connectToDatabase();
+  const db = client.db();
+
+  const user = db.collection("users").findOne({email});
+  if (!user) {
+    client.close();
+    throw new Error("No user found");
+  }
+
+  const isValid = await comparePassword(password, user.password);
+  if (!isValid) {
+    client.close();
+    throw new Error("Not correct password");
+  }
+
+  client.close();
+  res.setHeader("Set-Cookie", "a_name=Yoojacha;Max-age=3600;HttpOnly,Secure");
+  res.status(200).json({message: "Success signin"});
+  return;
 };
 ```
 
@@ -23,17 +55,19 @@ export default (req, res) => {
 export default (req, res) => {
   // Max-age를 0으로
   res.setHeader("Set-Cookie", "a_name=Yoojacha;Max-age=0;HttpOnly,Secure");
-  res.status(200).json({message: "ok"});
+  res.status(200).json({message: "Success logout"});
 };
 ```
 
-## signin.js <- component
+## Signin.js <- component
 
 ```js
 export default function Signin() {
   const router = useRouter();
 
-  Axios.post("api/signin").then((res) => {
+  // react-hook-form을 통해 email, password 값 받기
+
+  Axios.post("api/signin", {email, password}).then((res) => {
     if (res.status === 200) {
       router.push("/");
     }
