@@ -23,11 +23,11 @@ function App() {
         width={250} // automatically provided
         height={160} // automatically provided
         // quality={100} // 이미지 퀄리티 정도, 1~100, default는 75
+        // layout={'fill'} // "contain", "fill", "none" "cover"
         // blurDataURL="data:..." automatically provided
         // placeholder="blur"
         // priority // 랜더링 순서를 앞당김, disabling lazy-loading
         // Optional // blur-up while loading
-        // layout={'fill'} // 부모태그에 적용
       />
     </>
   );
