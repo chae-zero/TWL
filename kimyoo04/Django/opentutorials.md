@@ -57,8 +57,8 @@ urlpatterns = [
 ]
 ```
 
-- myapp의 urls.py 파일에서는 아래처럼 views.py의 함수를 호출한다.
-- dynamic routing은 아래처럼
+- myapp의 urls.py 파일에서는 아래처럼 views.py의 함수 호출
+- dynamic routing
 
 ```py
 urlpatterns = [
@@ -66,11 +66,93 @@ urlpatterns = [
 ]
 ```
 
-- dynamic routing의 id 값은 아래처럼
+- dynamic routing의 id 값
 
 ```py
 from django.shortcuts import HttpResponse
 
 def read(request, id):
     return HttpResponse('Read!'+id)
+```
+
+- CSRF 문제 해결 방법
+
+```py
+from django.views.decorators.csrf from csrf_exempt
+
+@csrf_exempt
+def my_view(request):
+    return HttpResponse("Hello World!")
+```
+
+- 요청 방식 분기 처리
+
+```py
+def create(request):
+    if request.method == "GET":
+        return HtmlResponse("this is GET")
+    if request.method == "POST":
+        return HtmlResponse("this is POST")
+```
+
+- redirect
+
+```py
+from django.shortcuts import redirect
+
+def move_url(request):
+    url = "/about"
+    return redirect(url)
+```
+
+- delete request
+
+```py
+@csrf_exempt
+def delete(request):
+    global topics
+    if request.DELETE['id']
+        newTopics = []
+        for topic in topics:
+        if topic['id'] != int(id):
+            newTopics .append(topic)
+        topics = newTopics
+    return redirect('/')
+```
+
+- put request
+- json 모듈 사용
+- HTMLTemplate로 함수를 만들어 html 코드 반환
+
+```py
+import json
+
+def update(request, id):
+    global topics
+    request = json.loads(request.body)
+    title = request['title']
+    body = request['body']
+
+    if request.method == 'GET':
+        for topic in topics:
+        if topic['id'] == int(id):
+            selectedTopic = {
+            "title": topic['title'],
+            "body": topic['body']
+            }
+        article = f'''
+            <form action="/update/{id}" method="put">
+                <p><input type="text" name="title" placeholder="title" value={selected_topic['title']}/></p>
+                <p><textarea name="body" placeholder="body">{selected_topic['body']}</textarea></p>
+                <p><input type="submit"/></p>
+            </form>
+        '''
+        return HttpResponse(HTMLTemplate(article, id))
+
+    if request.method == 'PUT':
+        for topic in topics:
+        if topic['id'] == id:
+            topic['title'] = title
+            topic['body'] = body
+        return redirect(f'/read/{id}')
 ```
