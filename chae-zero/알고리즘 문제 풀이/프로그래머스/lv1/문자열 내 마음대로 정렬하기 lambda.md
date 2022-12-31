@@ -1,10 +1,10 @@
 ### 문자열 내 마음대로 정렬하기
 
 
-
 ##### 문제 링크
 
 https://school.programmers.co.kr/learn/courses/30/lessons/12915
+
 
 
 ##### 나의 풀이
@@ -32,11 +32,13 @@ def solution(strings, n):
 ##### 다른 풀이 1
 
 
-1. sort, sorted에 key인자를 넣어줌으로써 정렬 기준을 정할 수 있다.
+1. sort, sorted에 key인자를 넣어줌으로써 정렬 기준을 정할 수 있음
 
-2. key 기준으로 정렬을 할 경우 오직 key 기준으로만 정렬을 한다. key 이외의 나머지 요소에 대해선 정렬되지 않는다.
+2. key 기준으로 정렬을 할 경우 오직 key 기준으로만 정렬함
 
-3. lambda를 이용한 key 설정에서 튜플을 넣어줌으로써 정렬의 우선순위를 지정할 수 있다.
+3. key 이외의 나머지 요소에 대해선 정렬되지 않음
+
+3. lambda를 이용한 key 설정에서 튜플을 넣어줌으로써 정렬의 우선순위를 지정할 수 있음
 
 ```py
 def solution(strings, n):
