@@ -57,7 +57,6 @@ def solution(x, n):
                 answer.append(-i)
 
     return answer
-    # list(reversed(리스트)) 순으로 불러줘야 함
 ```
 
 
