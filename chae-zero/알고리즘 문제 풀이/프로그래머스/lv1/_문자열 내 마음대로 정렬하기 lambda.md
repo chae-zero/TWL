@@ -30,7 +30,7 @@ def solution(strings, n):
     # i[n], sort() 활용
     a = []
     for i in strings:
-        a.append(i[n] + i) # 문자열 덧셈
+        a.append(i[n] + i) # 문자열 덧셈 acar ebed usun
         a.sort()
         # 알파벳 문자열 sort: i[n] 값이 같을 경우, 사전순으로 앞선 문자열이 앞쪽에 와야하므로 sort()
     
@@ -67,3 +67,7 @@ def solution(strings, n):
     # x[n]을 기준 삼아 단어들을 정렬한 후에, x[n] 값이 같은 단어들끼리는 또 다시 x를 기준으로 다시 한 번 정렬
     # 내림차순을 구하고 싶을 경우: 기준이 되는 key에 마이너스 부호 붙여주기
 ```
+
+sort(): 자기자신을 변화시키고, 반환을 안 함
+sorted(): 정렬한 새로운 값을 반환한다
+반환을 하고 안 하고의 차이
