@@ -13,7 +13,9 @@ https://school.programmers.co.kr/learn/courses/30/lessons/42862
 # 실패한 코드: 테스트 1만 통과, 접근 방법이 잘못됨
 def solution(n, lost, reserve):
     s = set()
-    
+
+    # set 함수의 시간 복잡도가 n번
+    # 변수로 따로 설정해놓았으면 좀 더 변수를 가지고 활용해볼 생각도 해볼 수 있었을 듯
     for i in range(1, n+1):
         # 1. i번이 도난 당하지 않았고 체육복이 1 벌인 학생이라면
         if i not in set(lost)|set(reserve):
@@ -48,6 +50,8 @@ def solution(n, lost, reserve):
   # 이때, x-1부터 탐색해야 x-1이 체육복 여벌을 빌릴 수 있었음에도 불구하고 받지 못하며, x+1은 x가 빌려주지 않아도 x+2에게 받을 수 있었기에 여벌 체육복이 낭비되는 상황 발생
 
   # 따라서 x-1번부터 탐색해야 낭비를 줄일 수 있음을 알 수 있음
+
+  # [ ....,x-2, x-1, x, x+1, x+2......]
 
     # set_reserve를 하나씩 i에 대입해보기
     for i in set_reserve:
