@@ -64,14 +64,3 @@ def solution(s):
     # answer 변수 지정 없이 바로 return
 ```
 
-
-
-##### 다른 풀이 2
-
-```py
-from collections import Counter
-# collections 모듈의 Counter 함수 활용: 리스트, 세트를 인자로 넘기면 각 항목을 키로 삼아 개수를 알려줌
-def solution(s):
-    c = Counter(s.lower())
-    return c['y'] == c['p'] 
-```
