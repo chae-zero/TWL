@@ -1,5 +1,9 @@
 ## 최소 설정법
 
+### 공식문서
+
+- [status code](https://www.django-rest-framework.org/api-guide/status-codes/)
+
 ### 시작 전 세팅
 
 - 환경 변수 설정
@@ -16,6 +20,20 @@
 - requirements.dev.txt
 - requirements.txt
 - app 폴더 생성
+
+```
+<!-- 복붙용도모음 -->
+docker-compose run --rm app sh -c "flake8"
+docker-compose run --rm app sh -c "python manage.py startproject 프로젝트명"
+docker-compose run --rm app sh -c "python manage.py startapp 앱명"
+docker-compose run --rm app sh -c "python manage.py runserver"
+docker-compose run --rm app sh -c "python manage.py test"
+docker-compose run --rm app sh -c "python manage.py createsuperuser"
+docker-compose run --rm app sh -c "python manage.py migrate"
+docker-compose run --rm app sh -c "python manage.py makemigrations"
+docker-compose run --rm app sh -c "python manage.py makemigrations 폴더명"
+docker-compose run --rm app sh -c "python manage.py sqlmigrate foldername filenumber"
+```
 
 ### 프로젝트 시작
 
@@ -70,12 +88,52 @@ class ProjectSerializer(serializer.ModelSerializer):
 ### views.py 수정
 
 ```py
-from django.http import JsonResponse
 from .models import Project
 from .serializer import ProjectSerializer
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+@api_view(['GET'])
 def project_list(request):
     projects = Project.objects.all()
     serializer = ProjectSerializer(projects, many=True)
-    return Response(serializer.data)
+
+    if serializer.is_valid(raise_exception=True):
+        return Response(serializer.data, status=status.HTTP_200_OK)
+```
+
+### urls.py 수정
+
+```py
+# urls.py
+urlpatterns = [
+    path('projects/', views.project_list)
+]
+```
+
+### .json 지원 설정
+
+```py
+# urls.py
+from rest_framewokr.urlpatterns import format_suffix_patterns
+
+urlpatterns = [
+    path('projects/', views.project_list)
+    path('projects/<int:id>', views.project_detail)
+]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+
+
+# views.py
+# 파라메터 중 format 을 None으로 해놓기
+@api_view(['GET'])
+def project_list(request, format=None):
+    projects = Project.objects.all()
+    serializer = ProjectSerializer(projects, many=True)
+
+    if serializer.is_valid(raise_exception=True):
+        return Response(serializer.data, status=status.HTTP_200_OK)
 ```
