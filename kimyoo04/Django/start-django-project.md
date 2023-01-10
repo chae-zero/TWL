@@ -39,10 +39,11 @@ docker-compose run --rm app sh -c "python manage.py sqlmigrate foldername filenu
 
 - docker build .
 - docker-compose run --rm app sh -c 앞에 붙이기 " 이 안에 넣기 "
+
 - django-admin startproject 파일이름 파일경로
 - django-admin startapp 앱이름
-- python manage.py migrate
 - python manage.py makemigrations 폴더이름
+- python manage.py migrate
 - python manage.py runserver (바꿀 포트번호)
 
 ### admin 계정 생성
@@ -62,6 +63,7 @@ class Project(models.Model):
         return f'{self.title} from {self.year}'
 ```
 
+- settings.py에 installed_app 리스트 안에 앱명을 추가 (폴더 위치 조심하기)
 - python manage.py makemigrations 프로젝트명
 - python manage.py migrate
 - admin.py 생성
@@ -75,21 +77,24 @@ admin.site.register(모델명)
 
 ### serializers.py 생성
 
+- settings.py에 installed_app 리스트안에 모듈 명 추가 rest_framework
+
 ```py
 from rest_framework import serializers
-from .model import Project
+from .models import Project
 
-class ProjectSerializer(serializer.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['id', 'title', 'content', 'year']
+
 ```
 
 ### views.py 수정
 
 ```py
 from .models import Project
-from .serializer import ProjectSerializer
+from .serializers import ProjectSerializer
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -132,8 +137,7 @@ urlpatterns = format_suffix_patterns(urlpatterns)
 @api_view(['GET'])
 def project_list(request, format=None):
     projects = Project.objects.all()
-    serializer = ProjectSerializer(projects, many=True)
-
-    if serializer.is_valid(raise_exception=True):
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    print("====================", projects)
+    serializer = ProjectSerializer(data=projects, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 ```
