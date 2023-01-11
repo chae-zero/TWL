@@ -93,7 +93,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 ### views.py 수정
 
 ```py
-from .models import Project
+from core.models import Project
 from .serializers import ProjectSerializer
 
 from rest_framework.decorators import api_view
@@ -101,20 +101,29 @@ from rest_framework.response import Response
 from rest_framework import status
 
 @api_view(['GET'])
-def project_list(request):
+def project_list(request, *args, **kwargs):
     projects = Project.objects.all()
     serializer = ProjectSerializer(projects, many=True)
-
-    if serializer.is_valid(raise_exception=True):
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 ```
 
 ### urls.py 수정
 
 ```py
-# urls.py
+# project/urls.py
+from django.urls import path
+
 urlpatterns = [
-    path('projects/', views.project_list)
+path('api/projects/', include('projects.urls'))
+]
+
+
+# app이름/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.project_list)
 ]
 ```
 
@@ -140,4 +149,28 @@ def project_list(request, format=None):
     print("====================", projects)
     serializer = ProjectSerializer(data=projects, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+```
+
+### detail API 설정
+
+```py
+@api_view(['GET', 'PUT', 'DELETE'])
+def project_detail(request, id):
+
+    try:
+        project = Project.objects.get(pk=id)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "GET":
+        serialize = ProjectSerializer(project)
+        return Response(serialize.data, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        serialize = ProjectSerializer(project, data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data, status=status.HTTP_201_CREATED)
+    elif request.method == "DElETE":
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 ```
