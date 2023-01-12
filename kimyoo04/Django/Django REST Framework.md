@@ -151,6 +151,42 @@ def drink_list(request, format=None):
 
 ### @property Decorator
 
+### @api_view and function based view
+
+- this is confusing because of too many logics.
+- but lt is useful when mixing many method or making CRUD all-in-one
+
+```py
+@api_view(['GET', 'POST'])
+def product_alt_view(request, pk=None, *args, **kwargs):
+    method = request.method
+
+    if method == "GET":
+        if pk is not None:
+            # detail view
+            # get_object_or_404 함수는 @api_view 데코레이터를 통해서 사용 가능해진다.
+            # get_object_or_404 함수는 있으면 obj 반환 없으면 404 에러 페이지를 로드한다.
+            obj = get_object_or_404(Product, pk=pk)
+            data = ProductSerializer(obj, many=False).data
+            return Response(data)
+        # list view
+        queryset = Product.objects.all()
+        data = ProductSerializer(queryset, many=True).data
+        return Response(data)
+
+    if method == "POST":
+        # create an item
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            title = serializer.validated_data.get('title')
+            content = serializer.validated_data.get('content') or None
+            if content is None:
+                content = title
+            serializer.save(content=content)
+            return Response(serializer.data)
+        return Response({"invalid": "not good data"}, status=400)
+```
+
 ### Generics APIView
 
 **generics.RetrieveAPIView**
@@ -247,44 +283,84 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
         super().perform_destroy(instance)
 ```
 
-### @api_view and function based view
-
-- this is confusing because of too many logics.
-- but lt is useful when mixing many method or making CRUD all-in-one
-
-```py
-@api_view(['GET', 'POST'])
-def product_alt_view(request, pk=None, *args, **kwargs):
-    method = request.method
-
-    if method == "GET":
-        if pk is not None:
-            # detail view
-            # get_object_or_404 함수는 @api_view 데코레이터를 통해서 사용 가능해진다.
-            # get_object_or_404 함수는 있으면 obj 반환 없으면 404 에러 페이지를 로드한다.
-            obj = get_object_or_404(Product, pk=pk)
-            data = ProductSerializer(obj, many=False).data
-            return Response(data)
-        # list view
-        queryset = Product.objects.all()
-        data = ProductSerializer(queryset, many=True).data
-        return Response(data)
-
-    if method == "POST":
-        # create an item
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            title = serializer.validated_data.get('title')
-            content = serializer.validated_data.get('content') or None
-            if content is None:
-                content = title
-            serializer.save(content=content)
-            return Response(serializer.data)
-        return Response({"invalid": "not good data"}, status=400)
-```
-
 ### mixins and Generic API View
 
 - 유연성 부여, 직접 만드는 것을 고려한 방식
+- GnericAPIView 앞에 상속을 받는다.
+- mixins는 self.특정메소드를 사용할 수 있게 만들어준다. (공식문서 확인할 것)
+
+**mixins.ListModeMixin**
+
+```py
+class ProjectMixinView(
+    mixins.ListModeMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView
+):
+
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+    # 클래스 기반 뷰의 메소드로 get은 get 요청을 위한 메소드이다. (post, put, patch, delete도 동일)
+    # (함수 기반 뷰는 조건을 통한 메소드별 분기처리함)
+    def get(self, request, *args, **kwargs): #HTTP -> Get
+        # mixins.CreateModelMixin을 통해 self.list메소드 사용
+        return self.list(request, *args, **kwargs)
+```
+
+**mixins.RetrieveModelMixin**
+
+```py
+class ProjectMixinView(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView
+):
+
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    lookup_field = 'pk' # mixins.RetrieveModelMixin을 통해 lookup_field 값 사용
+
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        pk = kwargs.get('pk')
+
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
+```
+
+**mixins.CreateModelMixin**
+
+```py
+class ProjectMixinView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView
+):
+
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    lookup_field = 'pk'
+
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        pk = kwargs.get('pk')
+
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        # mixins.CreateModelMixin을 통해 self.create메소드 사용
+        return self.create(request, *args, **kwargs)
+```
+
+**CreateAPIView, RetrieveAPIView, UpdateAPIView, ListAPIView, DestroyAPIView, ListCreateAPIView**
+
+- 위에서 배운 기본적인 generics 뷰들은 mixins과 GenericAPIView가 합쳐진 것이다.
+- 달리말하면 mixins는 위의 View 기능을 분리해서 소분해둔 클래스인 것이다.
+- 그래서 mixins와 GenericAPIView를 상속받아서 원하는 방식대로 설계를 편리하게 할 수 있다.
 
 ### Session Authentication & permissions
