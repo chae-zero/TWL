@@ -1,5 +1,18 @@
 # Django ORM
 
+### 공식문서
+
+- [Querysets](https://docs.djangoproject.com/en/dev/ref/models/querysets/)
+- [Expressions](https://docs.djangoproject.com/en/dev/ref/models/expressions/)
+- [Aggregation](https://docs.djangoproject.com/en/dev/topics/db/aggregation/)
+- [Functions](https://docs.djangoproject.com/en/dev/ref/models/database-functions/)
+
+### Cheat Sheet
+
+- [basic](https://velog.io/@aerialslash/Django-ORM-SQL-Cheat-Sheet)
+- [relationship tips](https://medium.com/hackernoon/django-orm-relationships-cheat-sheet-14433d6cf68c)
+- [optimization tips](https://gist.github.com/rg3915/91766c2de54233541f6743edba44732c)
+
 ### model 생성 예
 
 ```py
