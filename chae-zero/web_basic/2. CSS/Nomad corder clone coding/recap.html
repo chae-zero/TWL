@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <title>Home-MY First Web.</title>
+    <style>
+      body {
+        height: 500vh;
+        margin: 50px;
+      }
+      span {
+        background-color: yellowgreen;
+        padding: 5px;
+        border-radius: 10px;
+      }
+      input::placeholder { /*placeholder를 디자인할 수 있게 됨*/
+        color:yellowgreen;
+      }
+      p::selection {
+        padding: 20px; /*selection할때는 패딩 설정 불가*/
+        background-color: yellowgreen;
+        font-size: 50px;
+        color: white;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div>
+      <form>
+        <input type="text" name="id" placeholder="Name" />
+      </form>
+    </div>
+    <p>
+      안녕하세요 제 이름은 정채영입니다.<br>저는 붕어빵을 좋아해요.
+    </p>
+  </body>
+</html>
