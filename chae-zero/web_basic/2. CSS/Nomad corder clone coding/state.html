@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <title>my home</title>
+  </head>
+  <style>
+    button:focus {
+      background-color: grey;
+      color: black;
+    }
+    input:focus {
+      background-color: tomato;
+    }
+    a {
+      font-family: 'Times New Roman', Times, serif;
+      font-weight: bold;
+    }
+
+    a:visited {
+      color: purple;
+    }
+    a:hover {
+      color: teal;
+    }
+    a:focus {
+      color: turquoise;
+    }
+    form {
+      border: 1px solid salmon;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    form:focus-within {
+      border-color: seagreen;
+    }
+    form:hover input {
+      background-color: sienna;
+    }
+  </style>
+  <body>
+    <div>
+      <button>Hello</button>
+      <input type="text" />
+      <input type="password" />
+    </div>
+    <form>
+      <input type="text" name="" id="" />
+      <input type="text" name="" id="" />
+      <input type="text" name="" id="" />
+      <a href="https://apple.com">Go to apple</a>
+    </form>
+  </body>
+</html>

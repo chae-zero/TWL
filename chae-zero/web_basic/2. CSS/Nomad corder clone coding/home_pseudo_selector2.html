@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <title>Home-MY First Web.</title>
+    <style>
+      body {
+        height: 500vh;
+        margin: 50px;
+      }
+      span {
+        background-color: yellowgreen;
+        padding: 5px;
+        border-radius: 10px;
+      }
+      input {
+        border: 1px solid wheat;
+      } 
+      input:required {
+        border-color: tomato;
+      }
+      input[placeholder~='name'] {  /*이 경우엔 name 앞뒤에 공백이 하나라도 있어야만 적용됨 */
+      /*~는 독자적인 단어, 어구 "name"을 잡아주는 것이고
+*는 어떤 문장이든 name를 포함하고 있으면 다 선택*/
+        background-color: thistle;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form>
+        <input type="text" placeholder="first name" />
+        <input type="text" placeholder="last name" />
+        <input type="password" required placeholder="password"/>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<html>
+<body>
+    <form>
+        <p>
+            <label for="id_txt">text: </label> <!--text가 무언가(for에 들어가는 속성)의 이름표임을 명시-->
+            <input id="id_txt" type="text" name="id" value="default value"> <!--id= 옆에 for에 들어간 속성을 똑같이 -->
+        </p>
+        <p>
+            <label for="password">password: </label>
+            <input id="password" type="password" name="pwd" value="pwd"></p>
+        <p>
+            <label>textarea: 
+                <textarea id="comment" cols="50" rows="2">default value</textarea>
+            </label> <!--for, id 따로 지정할 필요 없이 이렇게 label 태그로 감싸줘도 됨-->
+        </p>
+        <p>
+            <label>
+                <input type="checkbox" name="color" value="red">붉은색
+            </label>
+        </p>
+        <p><input type="submit"></p>
+    </form>
+</body>
+</html>
