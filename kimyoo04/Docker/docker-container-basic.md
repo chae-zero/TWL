@@ -65,3 +65,9 @@ export hello=hi
 # 출력
 echo $hello
 ```
+
+### Dockerfile 개발 환경과 운영 환경을 다르게 설정
+
+`docker build -f Dockerfile.dev -t yookim/sak-exhibition ./`
+
+- -f 옵션으로 Dockerfile을 직접 명시
