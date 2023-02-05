@@ -7,6 +7,8 @@ docker start <컨테이너 아이디 | 이름>
 
 # -a 옵션: 해당 컨테이너 아이디를 실행이 될 때 붙어있는 상태에서 실행이 됐을 때의 아웃풋을 보여준다.
 docker start -a <컨테이너 아이디 | 이름>
+
+docker run <컨텐이너 이미지 | 이름>
 ```
 
 ### 도커 컨테이너 중지
@@ -38,7 +40,7 @@ docker system prune
 ### 실행중인 컨테이너 명령 전달
 
 ```sh
-dock exec <컨테이너 아이디> 명령 # docker run <이미지 이름> ls와 동일
+docker exec <컨테이너 아이디> 명령 # docker run <이미지 이름> ls와 동일
 
 # exec 는 실행 중인 컨테이너에 명령을 전달하고 run 은 새로운 컨테이너를 만든후 명령을 전달한다.
 ```

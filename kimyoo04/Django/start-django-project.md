@@ -21,8 +21,8 @@
 - requirements.txt
 - app 폴더 생성
 
-```
-<!-- 복붙용도모음 -->
+```sh
+# 복붙 용도 모음
 docker-compose run --rm app sh -c "flake8"
 docker-compose run --rm app sh -c "python manage.py startproject 프로젝트명"
 docker-compose run --rm app sh -c "python manage.py startapp 앱명"
